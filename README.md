@@ -9,8 +9,6 @@ class MyServer extends EventHandler {
     constructor() {
         super();
 
-        this.positions = {};
-
         this.addEventListener('message', (event) => {
             if(event.details.author === 'test') {
                 event.stopPropagation();
