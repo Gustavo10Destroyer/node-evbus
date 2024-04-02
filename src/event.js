@@ -1,42 +1,35 @@
 class Event {
-  #name;
-  #details;
-  #propagate;
-  #cancelled;
+	#name;
+	#details;
+	#propagate;
 
-  constructor(name, details) {
-    if(details === undefined) details = {};
+	constructor(name, details) {
+		if(details === undefined) details = {};
 
-    this.#name = name;
-    this.#details = details;
-    this.#propagate = true;
-    this.#cancelled = false;
-  }
+		this.#name = name;
+	    this.#details = details;
+		this.#propagate = true;
+	}
 
-  get name() {
-    return this.#name;
-  }
+	get name() {
+		return this.#name;
+	}
 
-  get details() {
-    return this.#details;
-  }
+	get details() {
+		return this.#details;
+	}
 
-  get propagate() {
-    return this.#propagate;
-  }
+	get propagate() {
+		return this.#propagate;
+	}
 
-  get cancelled() {
-    return this.#cancelled;
-  }
+	get cancellable() {
+		return false;
+	}
 
-  stopPropagation() {
-    this.#propagate = false;
-  }
-
-  setCancelled(value) {
-    if(typeof value !== 'boolean') throw new Error('value must be an boolean!');
-    this.#cancelled = value;
-  }
+	stopPropagation() {
+		this.#propagate = false;
+	}
 }
 
 module.exports = Event;

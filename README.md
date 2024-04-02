@@ -3,13 +3,13 @@
 
 # Exemplo
 ```js
-const { Event, EventHandler } = require('./src/index');
+const { Event, EventHandler, CancellableEvent } = require('./src/index');
 
 class MyServer extends EventHandler {
     constructor() {
         super();
 
-        this.addEventListener('message', (event) => {
+        this.addEventListener('pre-say', (event) => {
             if(event.details.author === 'test') {
                 event.stopPropagation();
                 event.setCancelled(true);
@@ -17,19 +17,24 @@ class MyServer extends EventHandler {
             }
         });
 
-        this.addEventListener('message', (event) => {
+        this.addEventListener('say', (event) => {
             let { author, content } = event.details;
             console.log(`[INFO] <${author}> ${content}`);
         });
     }
 
     async say(content, author) {
-        let event = new Event('message', {
+        let event = new CancellableEvent('pre-say', {
             author,
             content
         });
 
         await this.dispatchEvent(event);
+        if(event.cancelled) return event.cancelled;
+        this.dispatchEvent(new Event('say', {
+            author,
+            content
+        }));
         return event.cancelled;
     }
 }
